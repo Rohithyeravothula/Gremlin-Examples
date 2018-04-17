@@ -1,0 +1,30 @@
+graph = TinkerGraph.open()
+g = graph.traversal()
+
+g.addV("course").property(id, "CS101").as("one").addV("course").property(id, "CS201").as("two").addV("course").property(id, "CS220").as("two").addV("course").property(id, "CS420").as("two").addV("course").property(id, "CS334").as("two").addV("course").property(id, "CS681").as("two").addV("course").property(id, "CS400").as("two").addV("course").property(id, "CS526").as("two")
+
+
+
+
+g.addE("prereq").from(g.V("CS201")).to(g.V("CS101")).property(id, "p1").addE("prereq").from(g.V("CS220")).to(g.V("CS201")).property(id, "p2").addE("prereq").from(g.V("CS420")).to(g.V("CS220")).property(id, "p3").addE("coreq").from(g.V("CS420")).to(g.V("CS220")).property(id, "c1").addE("prereq").from(g.V("CS334")).to(g.V("CS201")).property(id, "p4").addE("prereq").from(g.V("CS681")).to(g.V("CS334")).property(id, "p5").addE("prereq").from(g.V("CS400")).to(g.V("CS334")).property(id, "p6").addE("prereq").from(g.V("CS526")).to(g.V("CS400")).property(id, "p7").addE("coreq").from(g.V("CS526")).to(g.V("CS400")).property(id, "c2")
+
+
+
+
+
+nodes having multiple edges
+g.V().as("start").out().as("end").select("start", "end").groupCount().unfold().filter(select(values).is(gt(1))).select(keys)
+
+
+
+
+get ancestors
+g.V("CS526").as("root").emit().repeat(out()).dedup().where(neq("root"))
+
+
+
+
+
+
+
+g.V("CS101").emit().repeat(__.in()).path().count(local).max().next() + g.V("CS101").emit().repeat(__.out()).path().count(local).max().next() - 1
